@@ -108,7 +108,8 @@ module small_disk(){
     
 }
 
-main_disk();
+//Comment out whichever one you want to render:
+//main_disk();
 
-small_disk();
+//small_disk();
 

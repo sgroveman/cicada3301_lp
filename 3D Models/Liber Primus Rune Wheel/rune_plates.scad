@@ -93,7 +93,9 @@ module small_rune_plates(){
 }
 
 
-rune_plates();
+//Comment out whichever one you want to render:
 
-small_rune_plates();
+//rune_plates();
+
+//small_rune_plates();
 

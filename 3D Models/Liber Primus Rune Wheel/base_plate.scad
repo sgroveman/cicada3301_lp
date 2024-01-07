@@ -1,4 +1,5 @@
 include <lp_wheel_config.scad>
+use <rune_disks.scad>
 
 module base_plate(){
     
@@ -35,3 +36,13 @@ module cicada(){
 }
 
 
+
+module final_base_plate(){
+    difference(){
+        base_plate();
+        translate([0,0,0.8])
+        main_disk();
+    }
+}
+
+final_base_plate();
