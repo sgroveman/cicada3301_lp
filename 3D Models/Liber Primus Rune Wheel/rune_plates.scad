@@ -5,32 +5,32 @@ module rune_data(){
     for(theta=[first_rune_index:1:final_rune_index]){
         
         color("black")   
-        translate([0,0,6.05])
-        linear_extrude(height = 1.6) {
+        translate([0,0,6.0])
+        linear_extrude(height = 1.65) {
             translate([(rune_index_offset)*sin(theta*360/29),(rune_index_offset)*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
             text(str(theta), size=9, valign="center", halign="center", font="Junicode:style=Bold");
         };
         
         color("black")   
-        translate([0,0,5.9])
-        linear_extrude(height = 1.58) {
+        translate([0,0,5.8])
+        linear_extrude(height = 1.6) {
             translate([rune_offset*sin(theta*360/29),rune_offset*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
             text(str(runes[theta]), size=13, valign="center", halign="center", font="Junicode:style=Bold");
         };
         
         color("black")   
-        translate([0,0,5.7])
-        linear_extrude(height = 1.52) {
+        translate([0,0,5.3])
+        linear_extrude(height = 1.6) {
             translate([rune_latin_offset*sin(theta*360/29),rune_latin_offset*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
             text(str(latin_fragments[theta]), size=7, valign="center", halign="center", font="Junicode:style=Bold");
         };
         
         color("black")   
-        translate([0,0,5.5])
-        linear_extrude(height = 1.5) {
+        translate([0,0,5.4])
+        linear_extrude(height = 1.45) {
             translate([rune_prime_offset*sin(theta*360/29),rune_prime_offset*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
             text(str(rune_prime_values[theta]), size=7, valign="center", halign="center", font="Junicode:style=Bold");
@@ -95,7 +95,7 @@ module small_rune_plates(){
 
 //Comment out whichever one you want to render:
 
-//rune_plates();
+rune_plates();
 
 //small_rune_plates();
 
