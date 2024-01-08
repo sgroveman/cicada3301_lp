@@ -3,6 +3,8 @@ include <lp_wheel_config.scad>
 module rune_data(){
 
     for(theta=[first_rune_index:1:final_rune_index]){
+
+        
         
         color("black")   
         translate([0,0,6.0])
@@ -25,7 +27,12 @@ module rune_data(){
         linear_extrude(height = 1.6) {
             translate([rune_latin_offset*sin(theta*360/29),rune_latin_offset*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
-            text(str(latin_fragments[theta]), size=7, valign="center", halign="center", font="Junicode:style=Bold");
+            if(theta == 21){
+                text(str(latin_fragments[theta]), size=6, valign="center", halign="center", font="Junicode:style=Bold");
+            }
+            else{
+                text(str(latin_fragments[theta]), size=7, valign="center", halign="center", font="Junicode:style=Bold");
+            }
         };
         
         color("black")   

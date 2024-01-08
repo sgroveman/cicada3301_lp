@@ -22,7 +22,7 @@ module inner_ring_lock(){
     for(theta=[0.23:1:29]){
         translate([0,0,4])
         rotate(a=[theta*360/29,90,0])
-        cylinder(h=small_disk_radius*0.99, r=0.8);
+        cylinder(h=small_disk_radius*1.01, r=0.8);
     };
 }
 
@@ -95,16 +95,16 @@ module small_disk(){
                 {
                     translate([0,0,8])
                     color("gray")
-                    cylinder(h=13, r=2.5, $fn=29);
+                    cylinder(h=13, r=1.5, $fn=29);
                     
-                    sphere(1, $fn=29);
+                    sphere(2, $fn=29);
                 };
                 
     
             }
             
             // Cut Out Disk Nub Hole
-            cylinder(h=10, r=3.1, $fn=200);
+            cylinder(h=12, r=3.1, $fn=200);
             
             // Cut out Bevels for Ring Lock
             inner_ring_lock();

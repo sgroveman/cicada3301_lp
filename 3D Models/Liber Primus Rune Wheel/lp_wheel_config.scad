@@ -20,9 +20,9 @@ rune_peg_offsets = main_disk_radius-plate_height/2;
 rune_peg_height = 3;
 rune_peg_radius = 2;
 
-rune_index_offset = main_disk_radius-8;
-rune_offset = main_disk_radius-20;
-rune_latin_offset = main_disk_radius-31;
+rune_index_offset = main_disk_radius-7;
+rune_offset = main_disk_radius-19.2;
+rune_latin_offset = main_disk_radius-30.3;
 rune_prime_offset = main_disk_radius-38;
 
 small_disk_scale = 0.675;
