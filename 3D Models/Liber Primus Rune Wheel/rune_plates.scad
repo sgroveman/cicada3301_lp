@@ -73,7 +73,7 @@ module rune_plates(){
             
             
             // Cutouts for the Pegs to hold the Rune Plates
-            scale(1.01); // Tolerance for the rails
+            scale(1.025); // Tolerance for the rails
             rune_plate_pegs();
             
             
@@ -95,7 +95,7 @@ module small_rune_plates(){
 
 //Comment out whichever one you want to render:
 
-rune_plates();
+//rune_plates();
 
-//small_rune_plates();
+small_rune_plates();
 

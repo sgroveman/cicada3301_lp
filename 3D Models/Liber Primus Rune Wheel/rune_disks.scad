@@ -88,6 +88,18 @@ module small_disk(){
                 // Add Beveled Edges Marking between Runes
                 color("black")
                 inner_ring_bevel();
+                
+                // Add the Handle to Spin the Wheel
+
+                 minkowski()
+                {
+                    translate([0,0,8])
+                    color("gray")
+                    cylinder(h=13, r=2.5, $fn=29);
+                    
+                    sphere(1, $fn=29);
+                };
+                
     
             }
             
@@ -111,5 +123,5 @@ module small_disk(){
 //Comment out whichever one you want to render:
 //main_disk();
 
-//small_disk();
+small_disk();
 
