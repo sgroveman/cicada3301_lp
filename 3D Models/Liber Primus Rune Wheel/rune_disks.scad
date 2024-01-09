@@ -95,7 +95,7 @@ module small_disk(){
                 {
                     translate([0,0,8])
                     color("gray")
-                    cylinder(h=13, r=1.5, $fn=29);
+                    cylinder(h=13, r=1.8, $fn=29);
                     
                     sphere(2, $fn=29);
                 };
@@ -104,7 +104,7 @@ module small_disk(){
             }
             
             // Cut Out Disk Nub Hole
-            cylinder(h=12, r=3.1, $fn=200);
+            cylinder(h=15, r=3.1, $fn=200);
             
             // Cut out Bevels for Ring Lock
             inner_ring_lock();

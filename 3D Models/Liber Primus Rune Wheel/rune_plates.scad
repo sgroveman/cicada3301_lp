@@ -23,7 +23,7 @@ module rune_data(){
         };
         
         color("black")   
-        translate([0,0,5.3])
+        translate([0,0,5.2])
         linear_extrude(height = 1.6) {
             translate([rune_latin_offset*sin(theta*360/29),rune_latin_offset*cos(theta*360/29),0])
             rotate(a = -theta*360/29)
@@ -102,7 +102,7 @@ module small_rune_plates(){
 
 //Comment out whichever one you want to render:
 
-//rune_plates();
+rune_plates();
 
-small_rune_plates();
+//small_rune_plates();
 
