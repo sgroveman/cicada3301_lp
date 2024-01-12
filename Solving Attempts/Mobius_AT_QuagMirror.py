@@ -54,18 +54,20 @@ prime_series   = list(sympy.primerange(0,10000))
 
 
 
-last_mobius = 1
-last_totient = 1
-last_totient_mobius = 1
+last_mobius = 0
+last_totient = 0
+last_totient_mobius = 0
 last_cti = 0
-last_cti_mobius = 1
-last_cti_totient_mobius = 1
+last_cti_mobius = 0
+last_cti_totient = 0
+last_cti_totient_mobius = 0
 last_ati = 0
-last_ati_mobius = 1
-last_ati_totient_mobius = 1
+last_ati_mobius = 0
+last_ati_totient_mobius = 0
 last_pti = 0
-last_pti_mobius = 1
-last_pti_totient_mobius = 1
+last_pti_mobius = 0
+last_pti_totient = 0
+last_pti_totient_mobius = 0
 
 index = 0
 
@@ -79,9 +81,11 @@ index = 0
 
 def get_AT_shift(value, mobius):
     if(mobius == 0):
-        new_value = (28-value)
-    else: 
-        new_value = mobius*value
+        new_value = (value)
+    elif(mobius == -1): 
+        new_value = -value
+    elif(mobius == 1):
+        new_value = 28-value
     return new_value
 
 
@@ -92,22 +96,27 @@ for cti in section1:
 
     CT_Stream.append(cti)
     
+    print("cti: " + str(cti))
     current_prime = prime_series[index]
     current_totient = current_prime - 1
     Totient_Stream.append(current_totient%29)
     current_mobius = mobius_series[index]
     current_totient_mobius = mobius_series[current_totient-1]
 
+    new_AT_value = (cti-get_AT_shift(last_cti, last_cti_mobius))%29
 
-    if(index != 0):
-        new_AT_value = get_AT_shift(cti + get_AT_shift(current_totient, current_totient_mobius), current_mobius)
+    print(new_AT_value)
 
-        new_AT_value = (new_AT_value + get_AT_shift(last_cti, last_cti_mobius))%29
+    new_totient_value = get_AT_shift(last_pti_totient, last_pti_totient_mobius)
 
+    print(new_totient_value%29)
 
-    else: 
-        new_AT_value = cti
+    new_AT_value = (new_AT_value - new_totient_value)%29
 
+    print(new_AT_value%29)
+    new_AT_value = get_AT_shift(new_AT_value, last_mobius)%29
+
+    print(new_AT_value%29)
     AT_Stream.append(new_AT_value)
     
 
@@ -115,11 +124,13 @@ for cti in section1:
 
     a_key = current_mobius
     b_key = current_totient_mobius
-
+    print("============")
+    print(new_AT_value)
     print("------------")
     print(a_key)
     print(b_key)
     print("------------")
+
 
     if(a_key == 0):
         if(b_key == 0 ):
@@ -156,6 +167,8 @@ for cti in section1:
             # [-1, -1]
             PT_Stream.append(CC_M[new_AT_value])
 
+    print(PT_Stream[-1])
+    print("===============")
     # Record Everything We'll Need to know for the next AutoKey:
 
     last_mobius = current_mobius
@@ -163,19 +176,21 @@ for cti in section1:
     last_totient_mobius = current_totient_mobius
     last_cti = cti 
     last_cti_mobius = mobius_series[last_cti]
-    last_cti_totient_mobius = mobius_series[prime_series[last_cti]-2]
+    last_cti_totient = prime_series[last_cti]-1
+    last_cti_totient_mobius = mobius_series[last_cti_totient-1]
     last_ati = new_AT_value
     last_ati_mobius = mobius_series[last_ati]
     last_ati_totient_mobius = mobius_series[prime_series[last_ati]-2]
     last_pti = PT_Stream[-1]
     last_pti_mobius = mobius_series[last_pti]
-    last_pti_totient_mobius = mobius_series[prime_series[last_pti]-2]
+    last_pti_totient = prime_series[last_pti]-1
+    last_pti_totient_mobius = mobius_series[last_pti_totient-1]
 
     # Increment Index:
     index = index+1
 
     # Break Early for Debugging:
-    if(index>=500):
+    if(index>=13):
         break
 
 
