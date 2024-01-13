@@ -54,9 +54,9 @@ prime_series   = list(sympy.primerange(0,10000))
 
 
 
-last_mobius = 0
+last_mobius = 1
 last_totient = 0
-last_totient_mobius = 0
+last_totient_mobius = 1
 last_cti = 0
 last_cti_mobius = 0
 last_cti_totient_mobius = 0
@@ -79,9 +79,11 @@ index = 0
 
 def get_AT_shift(value, mobius):
     if(mobius == 0):
-        new_value = -(28-value)
-    else: 
-        new_value = mobius*value
+        new_value = (value)
+    elif(mobius == -1): 
+        new_value = 28-value
+    elif(mobius == 1):
+        new_value = -value
     return new_value
 
 
@@ -100,85 +102,142 @@ for cti in section1:
 
 
     if(index != 0):
+        print("======Character DECRYPT START===========")
+        print("cti: " + str(cti) )
+        
+        if(current_mobius == -1):
 
-        cti_shift     = get_AT_shift(last_cti, last_cti_mobius)
-        pti_shift     = get_AT_shift(last_pti, last_pti_mobius)
-        totient_shift = get_AT_shift(last_totient, last_totient_mobius)
+            new_last_cti = 28-last_cti
+            new_AT_value = (-cti - new_last_cti)%29
 
-        print(cti)
-        print(cti_shift)
-        print(pti_shift)
-        print(totient_shift)
-        print("=")
-
-        if(current_mobius == 1):
+            print("After Shift 1: " + str(new_AT_value))
 
             if(current_totient_mobius == 1):
 
-                new_AT_value = -(cti + last_totient - current_totient)%29
+                new_AT_value = (new_AT_value + get_AT_shift(current_totient, current_totient_mobius))%29
 
             elif(current_totient_mobius == -1):
-
-                new_AT_value = (get_AT_shift(cti, last_mobius) - get_AT_shift(last_totient, current_totient_mobius))%29
-
-            else: # [1, 0]
-
-                new_AT_value = -(get_AT_shift(cti, last_mobius) + get_AT_shift(last_totient, current_totient_mobius))%29
-
-        elif(current_mobius == -1): # CTI Autokey
-
-            if(current_totient_mobius == -1):
                 if(last_totient_mobius == 1):
-                    new_AT_value = (last_cti-cti)%29
-                else:
-                    new_AT_value = (-last_cti-cti)%29
-            elif(current_totient_mobius == 0):
-                if(last_mobius == -1):
-                    new_AT_value = (cti+(last_cti+(28-last_totient)+(28-current_totient)))%29
-                elif(last_mobius == 1):
-                    new_AT_value = (28-cti+28-current_totient+(28-last_totient))%29
-                else:
-                    new_AT_value = (cti+last_cti+last_totient-current_totient)%29
-            else: # [-1, 1]
-                if(last_totient_mobius != 0):
-                    new_AT_value = (-cti - 28-last_totient)%29
-                else:
-                    new_AT_value = (cti +last_totient+28-current_totient)%29
+                    new_AT_value = (new_AT_value + get_AT_shift(last_totient, current_totient_mobius))%29
+                elif(last_totient_mobius == 0):
+                    new_cti = 28-cti
+                    new_last_cti = 28-last_cti
+                    new_AT_value = (cti - new_last_cti)%29
+                    new_AT_value = (new_AT_value - (last_totient))%29
 
-        else: # == 0
+            else:
+                # [-1, 0]
+                if(last_totient_mobius == -1):
+                    new_AT_value = (new_AT_value + (last_totient))%29
+                elif(last_totient_mobius == 1):
+                    new_AT_value = (new_AT_value + (last_totient))%29
+                else:
+                    if(last_mobius == 1):
+                        # [-1, 0] with last [1, 0]
+                        new_last_cti = 28-last_cti
+                        new_AT_value = (cti - new_last_cti)%29
+                        new_AT_value = (new_AT_value - (current_totient))%29
+                    elif(last_mobius == 0):
+                        # [-1, 0] with last [0, 0]
+                        new_cti = 28-cti
+                        new_last_cti = 28-last_cti
+                        new_AT_value = (-new_cti - new_last_cti)%29
+                        print("After Shifted: " + str(new_AT_value))
+                        new_AT_value = (new_AT_value - (last_totient))%29
+
+            print(new_AT_value)
+        elif(current_mobius == 0):
+            if(current_totient_mobius == 1):
+                new_cti = 28-cti
+                print(new_cti)
+                if(last_mobius == 0):
+                    new_last_cti = 28-last_cti
+                    new_AT_value = (-new_cti - new_last_cti)%29
+                    print("shifted 1: " + str(new_AT_value))
+                    new_AT_value = (new_AT_value + current_totient)%29
+                else:
+                    new_last_cti = get_AT_shift(last_cti, last_cti_mobius)
+                    print(new_last_cti)
+                    new_AT_value = (new_cti + 28 - new_last_cti)%29
+                    new_AT_value = (new_AT_value - current_totient)%29
+            elif(current_totient_mobius == 0):
+                if(last_totient_mobius == 0):
+                    new_cti = 28-cti
+                    print(new_cti)
+                    new_AT_value = (new_cti + last_cti)%29
+                    new_AT_value = (new_AT_value - current_totient)%29
+                elif(last_totient_mobius == -1):
+                    #[0,0] with previous [X, -1]
+                    new_last_cti = 28-last_cti
+                    print("new_last_cti: " + str(new_last_cti))
+                    print(cti)
+                    new_AT_value = (-cti + new_last_cti)%29
+                    print("before at shift: " + str(new_AT_value))
+                    new_AT_value = (-new_AT_value - last_totient)%29
+
+            elif(current_totient_mobius == -1):
+                new_cti = -cti
+                print(new_cti)
+                new_last_cti = get_AT_shift(last_cti, last_cti_mobius)
+                print(new_last_cti)
+                new_AT_value = (new_cti + 28 - new_last_cti)%29
+                new_AT_value = (new_AT_value - current_totient)%29
+
+        elif(current_mobius == 1):
 
             if(current_totient_mobius == 1):
-                if(last_mobius == -1):
-                    new_AT_value = (cti + last_totient)%29 #this case is wrong i bet
-                else:
-                    new_AT_value = (cti - current_totient + last_totient)%29
+                new_last_cti = 28-last_cti
+                new_AT_value = (-cti - new_last_cti)%29
+
+                print("After Shift 1: " + str(new_AT_value))
+
+                new_AT_value = (new_AT_value + get_AT_shift(current_totient, current_totient_mobius))%29
             elif(current_totient_mobius == -1):
-                new_AT_value = (cti - last_totient - 28)%29
-            else: # [0,0]
-                if(last_totient_mobius == 0):
-                    new_AT_value = (cti - last_cti - last_totient - current_totient)%29
-                elif(last_totient_mobius == -1):
-                    new_AT_value = (cti+28-last_totient-current_totient)%29
-                else: #1
-                    if(last_mobius == -1):
-                        new_AT_value = (cti-last_totient-current_totient)%29
-                    else:
-                        new_AT_value = (cti-last_totient-28-current_totient)%29
+                new_last_cti = 28-last_cti
+                new_AT_value = (-cti - new_last_cti)%29
+
+                print("After Shift 1: " + str(new_AT_value))
+                new_AT_value = (new_AT_value + get_AT_shift(last_totient, current_totient_mobius))%29
+            else: #0
+                # [1,0]
+                if(last_mobius == -1):
+                    new_cti = 28-cti
+                    new_last_cti = 28-last_cti
+                    new_AT_value = (-cti - new_last_cti)%29
+
+                    print("After Shift 1: " + str(new_AT_value))
+                    new_AT_value = (new_AT_value - (last_totient))%29
+                elif(last_mobius == 0):
+                    new_cti = 28-cti
+                    new_last_cti = 28-last_cti
+                    new_AT_value = (new_cti + new_last_cti)%29
+
+                    print("After Shift 1: " + str(new_AT_value))
+                    new_AT_value = (-new_AT_value + (last_totient))%29
+
+
+            print("After Shift 2: " + str(new_AT_value))
 
 
 
-        print(new_AT_value)
+
         print("------")
     else:
         new_AT_value = cti
 
+
+
+    print("Final AT: " + str(new_AT_value))
     AT_Stream.append(new_AT_value)
     
 
     # Now Let's Do the QuagMirror:
-    a_key = current_mobius
-    b_key = current_totient_mobius
-
+    b_key = last_totient_mobius
+    a_key = current_totient_mobius
+    print("Keys:")
+    print(a_key)
+    print(b_key)
+    print("-----------")
     if(a_key == 0):
         if(b_key == 0 ):
             # [0, 0]
@@ -214,11 +273,13 @@ for cti in section1:
             # [-1, -1]
             PT_Stream.append(CC_M[new_AT_value])
 
+    print("======Character DECRYPT END===========")
     # Record Everything We'll Need to know for the next AutoKey:
 
     last_mobius = current_mobius
     last_totient = current_totient
     last_totient_mobius = current_totient_mobius
+    print("last_totient_mobius: " + str(last_totient_mobius))
     last_cti = cti 
     last_cti_mobius = mobius_series[last_cti]
     last_cti_totient_mobius = mobius_series[prime_series[last_cti]-2]
@@ -233,7 +294,7 @@ for cti in section1:
     index = index+1
 
     # Break Early for Debugging:
-    if(index>=500):
+    if(index>=13):
         break
 
 

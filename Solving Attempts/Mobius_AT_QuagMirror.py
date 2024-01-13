@@ -54,16 +54,19 @@ prime_series   = list(sympy.primerange(0,10000))
 
 
 
-last_mobius = 0
-last_totient = 0
-last_totient_mobius = 0
+last_mobius = 1
+last_totient = 1
+last_totient_mobius = 1
+
 last_cti = 0
-last_cti_mobius = 0
-last_cti_totient = 0
-last_cti_totient_mobius = 0
+last_cti_mobius = 1
+last_cti_totient = 1
+last_cti_totient_mobius = 1
+
 last_ati = 0
 last_ati_mobius = 0
 last_ati_totient_mobius = 0
+
 last_pti = 0
 last_pti_mobius = 0
 last_pti_totient = 0
@@ -81,11 +84,11 @@ index = 0
 
 def get_AT_shift(value, mobius):
     if(mobius == 0):
-        new_value = (value)
+        new_value = (28-value)
     elif(mobius == -1): 
         new_value = -value
     elif(mobius == 1):
-        new_value = 28-value
+        new_value = value
     return new_value
 
 
@@ -103,27 +106,22 @@ for cti in section1:
     current_mobius = mobius_series[index]
     current_totient_mobius = mobius_series[current_totient-1]
 
-    new_AT_value = (cti-get_AT_shift(last_cti, last_cti_mobius))%29
+    new_AT_value = (cti - get_AT_shift(last_cti, last_mobius) - get_AT_shift(last_pti, last_totient_mobius))%29
 
     print(new_AT_value)
 
-    new_totient_value = get_AT_shift(last_pti_totient, last_pti_totient_mobius)
+    print("new cti: " + str(new_AT_value))
 
-    print(new_totient_value%29)
 
-    new_AT_value = (new_AT_value - new_totient_value)%29
+    print(new_AT_value)
 
-    print(new_AT_value%29)
-    new_AT_value = get_AT_shift(new_AT_value, last_mobius)%29
-
-    print(new_AT_value%29)
     AT_Stream.append(new_AT_value)
     
 
     # Now Let's Do the QuagMirror:
 
-    a_key = current_mobius
-    b_key = current_totient_mobius
+    a_key = current_totient_mobius
+    b_key = last_totient_mobius
     print("============")
     print(new_AT_value)
     print("------------")
@@ -131,6 +129,13 @@ for cti in section1:
     print(b_key)
     print("------------")
 
+    if(index == 0):
+        new_AT_value = 15
+        a_key = 1
+        b_key = 1
+    if(index == 1):
+        a_key = -1
+        b_key = -1
 
     if(a_key == 0):
         if(b_key == 0 ):
@@ -190,7 +195,7 @@ for cti in section1:
     index = index+1
 
     # Break Early for Debugging:
-    if(index>=13):
+    if(index>=6):
         break
 
 
